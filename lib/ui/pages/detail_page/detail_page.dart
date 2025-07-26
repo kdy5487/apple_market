@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_apple_market/models/product.dart';
+import 'package:intl/intl.dart';
 
+/// 상품 상세 페이지 위젯
 class DetailPage extends StatefulWidget {
   final Product product;
 
@@ -12,14 +14,15 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   late Product product;
-  // final format = NumberFormat("#,###", "ko_KR");
+  final format = NumberFormat("#,###", "ko_KR"); // 가격 포맷
 
   @override
   void initState() {
     super.initState();
-    product = widget.product;
+    product = widget.product; // 전달받은 상품 데이터로 초기화
   }
 
+  /// 좋아요 버튼 클릭 시 상태 변경
   void _toggleLike() {
     setState(() {
       if (product.isLiked) {
@@ -32,12 +35,14 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final formatter = NumberFormat('#,###'); // 천 단위 콤마 포맷
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('상품 상세'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context, product),
+          onPressed: () => Navigator.pop(context, product), // 뒤로가기 시 상품 정보 반환
         ),
       ),
       body: Stack(
@@ -47,11 +52,13 @@ class _DetailPageState extends State<DetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // 상품 이미지
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(product.image),
                 ),
                 const SizedBox(height: 16),
+                // 판매자 정보
                 Row(
                   children: [
                     const CircleAvatar(
@@ -60,41 +67,11 @@ class _DetailPageState extends State<DetailPage> {
                       child: Icon(Icons.person, color: Colors.white),
                     ),
                     const SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product.seller,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-
-                        Text(
-                          product.location,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF999999),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    Column(
-                      children: [
-                        Text('39.3°C', style: const TextStyle(fontSize: 16)),
-
-                        Text(
-                          '매너온도',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Color(0xFF999999),
-                          ),
-                        ),
-                      ],
-                    ),
+                    Text(product.seller, style: const TextStyle(fontSize: 16)),
                   ],
                 ),
                 const SizedBox(height: 16),
-
+                // 상품 제목
                 Text(
                   product.title,
                   style: const TextStyle(
@@ -103,11 +80,13 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 const SizedBox(height: 10),
+                // 상품 설명
                 Text(product.description),
                 const SizedBox(height: 100),
               ],
             ),
           ),
+          // 하단 고정 영역 (좋아요, 가격, 채팅 버튼)
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -120,6 +99,7 @@ class _DetailPageState extends State<DetailPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // 좋아요 버튼
                   Row(
                     children: [
                       IconButton(
@@ -133,13 +113,15 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ],
                   ),
+                  // 상품 가격
                   Text(
-                    '${product.price}원',
-                    style: const TextStyle(
-                      fontSize: 20,
+                    '${formatter.format(product.price)}원',
+                    style: TextStyle(
+                      fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  // 채팅하기 버튼
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
