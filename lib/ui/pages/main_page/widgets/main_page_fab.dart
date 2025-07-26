@@ -22,7 +22,7 @@ class MainPageFab extends StatelessWidget {
       child: show
           ? FloatingActionButton(
               onPressed: onPressed,
-              backgroundColor: Colors.orange,
+              backgroundColor: Colors.white,
               child: Icon(isPressed ? Icons.expand_less : Icons.arrow_upward),
             )
           : null, // show가 false면 버튼 미표시

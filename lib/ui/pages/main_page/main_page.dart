@@ -65,8 +65,9 @@ class _MainPageState extends State<MainPage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('삭제 확인'),
-        content: const Text('정말 삭제하시겠습니까?'),
+        backgroundColor: Colors.white,
+        title: const Text('상품 삭제'),
+        content: const Text('이 상품을 삭제하시겠습니까?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -77,7 +78,7 @@ class _MainPageState extends State<MainPage> {
               setState(() => _products.removeAt(index));
               Navigator.pop(context);
             },
-            child: const Text('삭제'),
+            child: const Text('확인'),
           ),
         ],
       ),
@@ -115,7 +116,12 @@ class _MainPageState extends State<MainPage> {
       body: ListView.builder(
         controller: _scrollController,
         itemCount: _products.length,
-        padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 2.0),
+
+        padding: const EdgeInsets.symmetric(
+          vertical: 10.0,
+          horizontal: 2.0,
+        ), // 전체 아이템 리스트 간격 조정
+
         itemBuilder: (context, index) {
           final product = _products[index];
           return GestureDetector(
